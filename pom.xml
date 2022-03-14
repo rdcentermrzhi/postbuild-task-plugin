@@ -6,10 +6,10 @@
     <version>4.12</version>
   </parent>
 
-  <groupId>org.jvnet.hudson.plugins</groupId>
-  <artifactId>postbuild-task</artifactId>
+  <groupId>org.pwrd.plugins</groupId>
+  <artifactId>postbuild-task-with-resumescrpit</artifactId>
   <packaging>hpi</packaging>
-  <name>Post build task</name>
+  <name>Post build task With ResumeScript</name>
   <version>${revision}${changelist}</version>
 
   <properties>
@@ -20,7 +20,7 @@
     <java.level>8</java.level>
   </properties>
 
-  <description>Allows to execute a batch/shell task depending on the build log output.</description>
+  <description>pwrd Allows to execute a batch/shell task depending on the build log output.</description>
   <url>https://github.com/jenkinsci/postbuild-task-plugin</url>
 
   <licenses>

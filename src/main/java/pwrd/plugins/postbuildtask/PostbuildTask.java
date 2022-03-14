@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package hudson.plugins.postbuildtask;
+package pwrd.plugins.postbuildtask;
 
 import hudson.Extension;
 import hudson.Launcher;
@@ -65,6 +65,17 @@ public class PostbuildTask extends Recorder {
 
 	public PostbuildTask(Collection<TaskProperties> tasks) {
 		this(tasks.toArray(new TaskProperties[0]));
+	}
+
+
+	private ResumeScriptProperties resumeScript;
+
+	public ResumeScriptProperties getResumeScript() {
+		return resumeScript;
+	}
+
+	public void setResumeScript(ResumeScriptProperties resumeScript) {
+		this.resumeScript = resumeScript;
 	}
 
 	/**
@@ -146,6 +157,22 @@ public class PostbuildTask extends Recorder {
 							+ e.getMessage());
 			return false;
 		}
+
+		if (build.getPreviousBuild() != null &&  build.getPreviousBuild().getResult() == Result.FAILURE) {
+			listener.getLogger().println("Running resumeScript  : " + resumeScript.getScript());
+			CommandInterpreter runner = getCommandInterpreter(launcher,
+					resumeScript.getScript());
+			Result result = runner.perform(build, launcher, listener) ? Result.SUCCESS
+					: Result.FAILURE;
+			listener.getLogger().println(
+					"POST BUILD TASK : " + result.toString());
+
+			if(result == Result.FAILURE){
+				listener.getLogger().println("ESCALATE FAILED POST BUILD TASK TO JOB STATUS");
+				build.setResult(Result.FAILURE);
+			}
+		}
+
 		return true;
 	}
 
@@ -255,7 +282,7 @@ public class PostbuildTask extends Recorder {
 
 		@Override
 		public String getDisplayName() {
-			return "Post build task";
+			return "Post build task With ResumeScript";
 		}
 
 		@Override
@@ -276,6 +303,10 @@ public class PostbuildTask extends Recorder {
 					LogProperties.class, "postbuild-task.logProperties.");
 			List<TaskProperties> tasksprops = req.bindParametersToList(
 					TaskProperties.class, "postbuild-task.taskpropertes.");
+
+			List<ResumeScriptProperties> resumeprops = req.bindParametersToList(
+					ResumeScriptProperties.class, "postbuild-task.resumescript.");
+
 			for (Iterator iterator = tasksprops.iterator(); iterator.hasNext();) {
 				TaskProperties taskProperties = (TaskProperties) iterator
 						.next();
@@ -295,7 +326,11 @@ public class PostbuildTask extends Recorder {
 				taskProperties.setLogTexts((LogProperties[]) logPropsList
 						.toArray(new LogProperties[logPropsList.size()]));
 			}
-			return new PostbuildTask(tasksprops);
+			PostbuildTask postbuildTask =  new PostbuildTask(tasksprops);
+			if (null != resumeprops && resumeprops.size() > 0)
+				postbuildTask.setResumeScript(resumeprops.get(0));
+
+			return postbuildTask;
 		}
 	}
 }

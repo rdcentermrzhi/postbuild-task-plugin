@@ -1,6 +1,6 @@
 <FindBugsFilter>
   <Match>
-    <Class name="hudson.plugins.postbuildtask.TaskProperties" />
+    <Class name="pwrd.plugins.postbuildtask.TaskProperties" />
     <Bug pattern="NM_FIELD_NAMING_CONVENTION" />
   </Match>
 </FindBugsFilter>

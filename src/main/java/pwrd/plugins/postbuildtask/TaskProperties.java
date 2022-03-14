@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package hudson.plugins.postbuildtask;
+package pwrd.plugins.postbuildtask;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 

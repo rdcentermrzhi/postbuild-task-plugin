@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package hudson.plugins.postbuildtask;
+package pwrd.plugins.postbuildtask;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
@@ -29,32 +29,23 @@ import org.kohsuke.stapler.DataBoundConstructor;
  * @author shinod.mohandas
  * 
  */
-public final class LogProperties {
+public final class ResumeScriptProperties {
 
-	public String logText;
-
-	public String operator;
+	/**
+	 * Shell script to be executed.
+	 */
+	public String script;
 
 	@DataBoundConstructor
-	public LogProperties(String logText, String operator) {
-		this.logText = logText;
-		this.operator = operator;
+	public ResumeScriptProperties(String script) {
+		this.script = script;
 	}
 
-	private void setLogText(String logText) {
-		this.logText = logText;
+	public String getScript() {
+		return script;
 	}
 
-	public String getLogText() {
-		return logText;
+	public void setScript(String script) {
+		this.script = script;
 	}
-
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
-
-	public String getOperator() {
-		return operator;
-	}
-
 }
