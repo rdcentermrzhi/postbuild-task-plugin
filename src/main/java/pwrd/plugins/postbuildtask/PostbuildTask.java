@@ -158,7 +158,8 @@ public class PostbuildTask extends Recorder {
 			return false;
 		}
 
-		if (build.getPreviousBuild() != null &&  build.getPreviousBuild().getResult() == Result.FAILURE) {
+		if ( (build.getPreviousBuild() != null) &&  (build.getPreviousBuild().getResult() == Result.FAILURE)
+		    &&  (build.getResult() == Result.SUCCESS) ) {
 			listener.getLogger().println("Running resumeScript  : " + resumeScript.getScript());
 			CommandInterpreter runner = getCommandInterpreter(launcher,
 					resumeScript.getScript());
@@ -301,6 +302,8 @@ public class PostbuildTask extends Recorder {
 			// if(req.getParameter("postbuild-task.")!=null)
 			List<LogProperties> logprops = req.bindParametersToList(
 					LogProperties.class, "postbuild-task.logProperties.");
+
+
 			List<TaskProperties> tasksprops = req.bindParametersToList(
 					TaskProperties.class, "postbuild-task.taskpropertes.");
 
