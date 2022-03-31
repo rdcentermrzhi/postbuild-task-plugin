@@ -25,6 +25,8 @@ package pwrd.plugins.postbuildtask;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import java.util.Arrays;
+
 /**
  * A task properties.
  * 
@@ -37,6 +39,8 @@ public final class TaskProperties {
 	public LogProperties[] logTexts;
 	public Boolean EscalateStatus;
 	public Boolean RunIfJobSuccessful;
+	public Boolean IfMatchEscalateFailed;
+
 	public String logText;
 	/**
 	 * Shell script to be executed.
@@ -44,10 +48,11 @@ public final class TaskProperties {
 	public String script;
 
 	@DataBoundConstructor
-	public TaskProperties(String script, Boolean EscalateStatus, Boolean RunIfJobSuccessful) {
+	public TaskProperties(String script, Boolean EscalateStatus, Boolean RunIfJobSuccessful, Boolean IfMatchEscalateFailed) {
 		this.script = script;
 		this.EscalateStatus = EscalateStatus;
 		this.RunIfJobSuccessful = RunIfJobSuccessful;
+		this.IfMatchEscalateFailed = IfMatchEscalateFailed;
 	}
 
 	public void setLogTexts(LogProperties[] logTexts) {
@@ -59,6 +64,9 @@ public final class TaskProperties {
 	}
 	public Boolean getRunIfJobSuccessful(){
 		return this.RunIfJobSuccessful;
+	}
+	public Boolean getIfMatchEscalateFailed(){
+		return this.IfMatchEscalateFailed;
 	}
 
 	public LogProperties[] getLogProperties() {
@@ -73,6 +81,17 @@ public final class TaskProperties {
 		logTexts = new LogProperties[] {new LogProperties(logText,"AND")};
 	}
 
+	@Override
+	public String toString() {
+		return "TaskProperties{" +
+				"logTexts=" + Arrays.toString(logTexts) +
+				", EscalateStatus=" + EscalateStatus +
+				", RunIfJobSuccessful=" + RunIfJobSuccessful +
+				", IfMatchEscalateFailed=" + IfMatchEscalateFailed +
+				", logText='" + logText + '\'' +
+				", script='" + script + '\'' +
+				'}';
+	}
 	/*
 	 * public TaskProperties(LogProperties[] logTexts, String script) {
 	 * this.logTexts = logTexts; this.script = script; }

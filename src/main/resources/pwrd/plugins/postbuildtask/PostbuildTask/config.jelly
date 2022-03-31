@@ -66,6 +66,11 @@
          <f:entry title="${%Escalate script execution status to job status}" help="/plugin/postbuild-task/help/help-escalatestatus.html">
                <f:checkbox name="postbuild-task.taskpropertes.EscalateStatus" value="true" checked="${t.getEscalateStatus()}" />
          </f:entry>
+
+         <f:entry title="${% if log match, job fail}" help="/plugin/help-ifmatchEscalateFailed.html">
+                        <f:checkbox name="postbuild-task.taskpropertes.IfMatchEscalateFailed" value="true" checked="${t.getIfMatchEscalateFailed()}" />
+         </f:entry>
+
           <f:entry>
             <div align="right">
               <input type="button" value="${%Delete task}" class="repeatable-delete show-if-not-only" style="margin-left: 1em;" />

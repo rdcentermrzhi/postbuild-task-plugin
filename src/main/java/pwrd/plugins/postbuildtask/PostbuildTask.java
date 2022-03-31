@@ -112,6 +112,8 @@ public class PostbuildTask extends Recorder {
 
      	Result pr = build.getResult();
 
+		listener.getLogger().println("Performing Post build task..." +build.getPreviousBuild().due().getTimeInMillis());
+
 		try {
 			for (int i = 0; i < tasks.length; i++) {
 				TaskProperties taskProperties = tasks[i];
@@ -142,6 +144,13 @@ public class PostbuildTask extends Recorder {
 							listener.getLogger().println("ESCALATE FAILED POST BUILD TASK TO JOB STATUS");
 							build.setResult(Result.FAILURE);
 					}
+
+					if (taskProperties.getIfMatchEscalateFailed()) {
+						//如果勾选选项匹配成功就认为工程失败
+						listener.getLogger().println("IfMatchEscalateFailed ESCALATE FAILED POST BUILD TASK TO JOB STATUS");
+						build.setResult(Result.FAILURE);
+					}
+
 				} else {
 					listener.getLogger().println(
 							"Logical operation result is FALSE");
@@ -310,10 +319,19 @@ public class PostbuildTask extends Recorder {
 			List<ResumeScriptProperties> resumeprops = req.bindParametersToList(
 					ResumeScriptProperties.class, "postbuild-task.resumescript.");
 
+
+			System.out.println(tasksprops);
+			System.out.println(logprops);
+
 			for (Iterator iterator = tasksprops.iterator(); iterator.hasNext();) {
 				TaskProperties taskProperties = (TaskProperties) iterator
 						.next();
+
+
+
+
 				List<LogProperties> logPropsList = new ArrayList<LogProperties>();
+
 				for (Iterator iterator2 = logprops.iterator(); iterator2
 						.hasNext();) {
 					LogProperties logProperties = (LogProperties) iterator2
@@ -328,7 +346,12 @@ public class PostbuildTask extends Recorder {
 				}
 				taskProperties.setLogTexts((LogProperties[]) logPropsList
 						.toArray(new LogProperties[logPropsList.size()]));
+
+
 			}
+
+
+
 			PostbuildTask postbuildTask =  new PostbuildTask(tasksprops);
 			if (null != resumeprops && resumeprops.size() > 0)
 				postbuildTask.setResumeScript(resumeprops.get(0));

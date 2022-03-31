@@ -1,4 +1,4 @@
-/*
+<!--
  * The MIT License
  * 
  * Copyright (c) 2009, Ushus Technologies LTD.,Shinod K Mohandas
@@ -20,49 +20,8 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- */
-package pwrd.plugins.postbuildtask;
-
-import org.kohsuke.stapler.DataBoundConstructor;
-
-/**
- * @author shinod.mohandas
- * 
- */
-public final class LogProperties {
-
-	public String logText;
-
-	public String operator;
-
-	@DataBoundConstructor
-	public LogProperties(String logText, String operator) {
-		this.logText = logText;
-		this.operator = operator;
-	}
-
-	private void setLogText(String logText) {
-		this.logText = logText;
-	}
-
-	public String getLogText() {
-		return logText;
-	}
-
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
-
-	public String getOperator() {
-		return operator;
-	}
-
-
-	@Override
-	public String toString() {
-		return "LogProperties{" +
-				"logText='" + logText + '\'' +
-				", operator='" + operator + '\'' +
-				'}';
-	}
-}
+-->
+<div>
+<p>If the execution of the specified script, the status of the entire
+job/build is escalated to failed.</p>
+</div>
