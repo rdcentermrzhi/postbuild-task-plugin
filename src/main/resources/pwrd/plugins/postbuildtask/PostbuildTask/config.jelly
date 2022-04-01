@@ -1,18 +1,18 @@
 <!--
  * The MIT License
- * 
+ *
  * Copyright (c) 2009, Ushus Technologies LTD.,Shinod K Mohandas
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,6 +23,71 @@
 -->
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:p="/lib/postbuild">
+
+<script>
+
+
+
+
+function fromCheckBoxifmatchEscalateFailed(dom, checked)
+{
+
+    var allInput = document.getElementsByClassName("IfMatchEscalateFailed.checkbox");
+
+    var allInputHid = document.getElementsByClassName("IfMatchEscalateFailed.hidden");
+
+    var i;
+    for(i = 0;allInput.length > i; i++){
+        if(allInput[i] == dom){
+            break;
+        }
+    }
+
+    allInputHid[i].value=checked;
+  //  alert(allInputHid[i].value);
+}
+
+    function fromCheckBoxEscalateStatus(dom, checked)
+    {
+
+    var allInput = document.getElementsByClassName("EscalateStatus.checkbox");
+
+    var allInputHid = document.getElementsByClassName("EscalateStatus.hidden");
+
+    var i;
+    for(i = 0;allInput.length > i; i++){
+    if(allInput[i] == dom){
+    break;
+    }
+    }
+
+    allInputHid[i].value=checked;
+    //  alert(allInputHid[i].value);
+    }
+
+
+    function fromCheckBoxRunIfJobSuccessful(dom, checked)
+    {
+
+    var allInput = document.getElementsByClassName("RunIfJobSuccessful.checkbox");
+
+    var allInputHid = document.getElementsByClassName("RunIfJobSuccessful.hidden");
+
+    var i;
+    for(i = 0;allInput.length > i; i++){
+    if(allInput[i] == dom){
+    break;
+    }
+    }
+
+    allInputHid[i].value=checked;
+    //  alert(allInputHid[i].value);
+    }
+
+
+</script>
+
+
   <f:block>
   <d:taglib uri="local">
     <f:entry title="${%Tasks}">
@@ -32,7 +97,7 @@
           <f:entry title="" help="/plugin/postbuild-task/help/help-logText.html">
                <f:repeatable var="lp" items="${t.logTexts}" minimum="1">
                  <p:blockWrapper>
-                   	
+
                    		<f:entry title="${%Log text}">
                    			<f:textbox name="postbuild-task.logProperties.logText" value="${lp.logText}" />
                    		</f:entry>
@@ -59,16 +124,23 @@
           </f:entry>
 
 
-         <f:entry title="${%Run script only if all previous steps were successful}" help="/plugin/postbuild-task/help/help-runifjobsuccessful.html">
-               <f:checkbox name="postbuild-task.taskpropertes.RunIfJobSuccessful" value="true" checked="${t.getRunIfJobSuccessful()}" /> 
+         <f:entry title="${%Run script only if all previous steps were successful }" help="/plugin/postbuild-task/help/help-runifjobsuccessful.html">
+               <f:checkbox   class="RunIfJobSuccessful.checkbox" name="RunIfJobSuccessful.check" value="true" checked="${t.getRunIfJobSuccessful()}"
+                           onclick="fromCheckBoxRunIfJobSuccessful(this, this.checked)"/>
+               <input  class="RunIfJobSuccessful.hidden"  name="postbuild-task.taskpropertes.RunIfJobSuccessful" type="hidden" value="${t.getRunIfJobSuccessful()}" />
          </f:entry>
 
          <f:entry title="${%Escalate script execution status to job status}" help="/plugin/postbuild-task/help/help-escalatestatus.html">
-               <f:checkbox name="postbuild-task.taskpropertes.EscalateStatus" value="true" checked="${t.getEscalateStatus()}" />
+               <f:checkbox  class="EscalateStatus.checkbox" name="EscalateStatus.check" value="true" checked="${t.getEscalateStatus()}"
+               onclick="fromCheckBoxEscalateStatus(this, this.checked)" />
+                <input class="EscalateStatus.hidden" name="postbuild-task.taskpropertes.EscalateStatus" type="hidden" value="${t.getEscalateStatus()}" />
          </f:entry>
 
          <f:entry title="${% if log match, job fail}" help="/plugin/help-ifmatchEscalateFailed.html">
-                        <f:checkbox name="postbuild-task.taskpropertes.IfMatchEscalateFailed" value="true" checked="${t.getIfMatchEscalateFailed()}" />
+                        <f:checkbox name="ifmatchEscalateFailed" value="true" class="IfMatchEscalateFailed.checkbox"
+                        onclick="fromCheckBoxifmatchEscalateFailed(this, this.checked)"
+               checked="${t.getIfMatchEscalateFailed()}"/>
+                         <input class ="IfMatchEscalateFailed.hidden" name="postbuild-task.taskpropertes.IfMatchEscalateFailed" type="hidden" value="${t.getIfMatchEscalateFailed()}" />
          </f:entry>
 
           <f:entry>
@@ -88,6 +160,6 @@
         </f:entry>
 
     </f:entry>
-  </d:taglib>  
+  </d:taglib>
   </f:block>
 </j:jelly>

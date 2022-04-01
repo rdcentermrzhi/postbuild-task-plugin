@@ -37,14 +37,17 @@ import hudson.tasks.Publisher;
 import hudson.tasks.Recorder;
 import hudson.tasks.Shell;
 import net.sf.json.JSONObject;
-import org.kohsuke.stapler.StaplerRequest;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.kohsuke.stapler.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -300,6 +303,7 @@ public class PostbuildTask extends Recorder {
 			return "/plugin/postbuild-task/help/main.html";
 		}
 
+
 		@Override
 		public PostbuildTask newInstance(StaplerRequest req, JSONObject formData)
 				throws FormException {
@@ -316,12 +320,18 @@ public class PostbuildTask extends Recorder {
 			List<TaskProperties> tasksprops = req.bindParametersToList(
 					TaskProperties.class, "postbuild-task.taskpropertes.");
 
+
+//			List<TaskProperties> tasksprops = bindParametersToList(
+//					TaskProperties.class, "postbuild-task.taskpropertes.", req);
+
+
 			List<ResumeScriptProperties> resumeprops = req.bindParametersToList(
 					ResumeScriptProperties.class, "postbuild-task.resumescript.");
 
-
-			System.out.println(tasksprops);
-			System.out.println(logprops);
+			//System.out.println("==============Start======================");
+			//System.out.println(tasksprops);
+			//System.out.println(logprops);
+			//System.out.println("==============End======================");
 
 			for (Iterator iterator = tasksprops.iterator(); iterator.hasNext();) {
 				TaskProperties taskProperties = (TaskProperties) iterator
